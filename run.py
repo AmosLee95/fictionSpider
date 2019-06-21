@@ -87,9 +87,14 @@ class FictionSpider():
                 self.chapter[index]['state'] = 'running'
                 src = self.chapter[index]['src']
                 content = self.getChapterContent(src)
-                self.chapter[index]['content'] = content
-                self.chapter[index]['state'] = 'complete'
-                self.completeNum += 1
+                if content == 'error':
+                    self.chapter[index]['state'] = 'static'
+                    # 已经漏掉了，得再读一次吧
+                    index -= 1
+                else:
+                    self.chapter[index]['content'] = content
+                    self.chapter[index]['state'] = 'complete'
+                    self.completeNum += 1
                 if index % 10 == 0 :
                     print('%d / %d\n'%(self.completeNum, self.chapterNum))
 
@@ -97,17 +102,21 @@ class FictionSpider():
         print('kill a thread, left:%d\n'%self.runThread)
 
     def getChapterContent(self, src):
-        # print(src)
-        r = requests.get(src)
-        r.encoding = 'UTF-8'
-        soup = BeautifulSoup(r.text)
-        content  = soup.select("#content")[0].text
-        content = re.sub(r'\xa0', "\n", content)
-        content = re.sub(r'\ufeff', "\n", content)
-        content = re.sub(r'\n\n', "\n", content)
-        content = re.sub(r'\n\n', "\n", content)
-        content = re.sub(r'\n\n', "\n", content)
-        content = "\n\n"+re.sub(r'\n', "\n\n", content)
+        try:
+            # print(src)
+            r = requests.get(src)
+            r.encoding = 'UTF-8'
+            soup = BeautifulSoup(r.text)
+            content  = soup.select("#content")[0].text
+            content = re.sub(r'\xa0', "\n", content)
+            content = re.sub(r'\ufeff', "\n", content)
+            content = re.sub(r'\n\n', "\n", content)
+            content = re.sub(r'\n\n', "\n", content)
+            content = re.sub(r'\n\n', "\n", content)
+            content = "\n\n"+re.sub(r'\n', "\n\n", content)
+        except:
+            print('异常！')
+            content = 'error'
         return content
 
 
