@@ -95,8 +95,8 @@ class FictionSpider():
                     self.chapter[index]['content'] = content
                     self.chapter[index]['state'] = 'complete'
                     self.completeNum += 1
-                # if index % 10 == 0 :
-                #     print('%d / %d\n'%(self.completeNum, self.chapterNum))
+                if index % 50 == 0 :
+                    print('%d / %d\n'%(self.completeNum, self.chapterNum))
                         
                 # print('%d / %d\n'%(self.completeNum, self.chapterNum))
 
