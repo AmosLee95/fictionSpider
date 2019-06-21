@@ -4,9 +4,10 @@
 # webEncoding = 'gbk'
 
 
-sourceLink = 'http://www.aixiashu.com/2/2397/'
+sourceLink = 'http://www.aixiashu.com/36/36732/'
 webEncoding = 'UTF-8'
-threadDapth = 35
+threadDapth = 30
+jumpNum = 0
 
 
 import requests
@@ -102,11 +103,14 @@ class FictionSpider():
         soup = BeautifulSoup(r.text)
         content  = soup.select("#content")[0].text
         content = re.sub(r'\xa0', "\n", content)
+        content = re.sub(r'\ufeff', "\n", content)
         content = re.sub(r'\n\n', "\n", content)
         content = re.sub(r'\n\n', "\n", content)
+        content = re.sub(r'\n\n', "\n", content)
+        content = "\n\n"+re.sub(r'\n', "\n\n", content)
         return content
 
 
 
 fictionSpider = FictionSpider()
-fictionSpider.run(sourceLink, threadDapth)
+fictionSpider.run(sourceLink, threadDapth, jumpNum)
