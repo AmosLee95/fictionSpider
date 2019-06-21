@@ -6,7 +6,7 @@
 
 sourceLink = 'http://www.aixiashu.com/36/36732/'
 webEncoding = 'UTF-8'
-threadDapth = 30
+threadDapth = 100
 jumpNum = 0
 
 
@@ -90,13 +90,15 @@ class FictionSpider():
                 if content == 'error':
                     self.chapter[index]['state'] = 'static'
                     # 已经漏掉了，得再读一次吧
-                    index -= 1
+                    index -= 10
                 else:
                     self.chapter[index]['content'] = content
                     self.chapter[index]['state'] = 'complete'
                     self.completeNum += 1
-                if index % 10 == 0 :
-                    print('%d / %d\n'%(self.completeNum, self.chapterNum))
+                # if index % 10 == 0 :
+                #     print('%d / %d\n'%(self.completeNum, self.chapterNum))
+                        
+                # print('%d / %d\n'%(self.completeNum, self.chapterNum))
 
         self.runThread -= 1
         print('kill a thread, left:%d\n'%self.runThread)
