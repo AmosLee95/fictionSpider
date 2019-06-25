@@ -28,6 +28,8 @@ class FictionSpider():
         self.completeNum = 0
         self.runThread = 0
         self.unComplete = 0
+        self.unCompleteSrc=[]
+
     def run(self, sourceLink, queueDepth, jumpNum = 0):
         r = requests.get(sourceLink)
         r.encoding = 'UTF-8'
@@ -52,6 +54,11 @@ class FictionSpider():
             
         print('get chapterList complete')
         self.chapterNum = len(chapterList)
+        print('============================================================\n')
+        print("ChapterNum: %d"%self.chapterNum)
+        queueDepth = queueDepth if queueDepth < self.chapterNum else self.chapterNum
+        print("QueueDepth: %d\n"%queueDepth)
+        print('============================================================')
         for x in range(queueDepth):
             _thread.start_new_thread( self.tryGetAChapterConternt )
             self.runThread += 1
@@ -66,6 +73,8 @@ class FictionSpider():
                 # 只要有一个没停止，就return
                 # todo：没停止可以跳到上面去，继续执行
                 self.unComplete += 1
+                self.unCompleteSrc.append(entry['src'])
+
         # 经过检查，都complete，即可以进行保存了
         print('开始写入')
         for entry in self.chapter:
@@ -90,18 +99,21 @@ class FictionSpider():
                 if content == 'error':
                     self.chapter[index]['state'] = 'static'
                     # 已经漏掉了，得再读一次吧
+                    print("index -= 10")
                     index -= 10
                 else:
                     self.chapter[index]['content'] = content
                     self.chapter[index]['state'] = 'complete'
                     self.completeNum += 1
-                if index % 50 == 0 :
-                    print('%d / %d\n'%(self.completeNum, self.chapterNum))
-                        
-                # print('%d / %d\n'%(self.completeNum, self.chapterNum))
-
+                if self.completeNum == 1 :
+                    print("ChapterNum: %d"%self.chapterNum)
+                if self.completeNum % (self.chapterNum / 100) < 1 % (self.chapterNum / 100):
+                    print('%d%%'%(self.completeNum // (self.chapterNum / 100)))
+                else:
+                    if self.completeNum == self.chapterNum :
+                        print('100%%')
         self.runThread -= 1
-        print('kill a thread, left:%d\n'%self.runThread)
+        # print('kill a thread, left:%d\n'%self.runThread)
 
     def getChapterContent(self, src):
         try:
@@ -125,3 +137,5 @@ class FictionSpider():
 
 fictionSpider = FictionSpider()
 fictionSpider.run(sourceLink, threadDapth, jumpNum)
+
+
