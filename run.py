@@ -32,7 +32,7 @@ class FictionSpider():
 
     def run(self, sourceLink, queueDepth, jumpNum = 0):
         r = requests.get(sourceLink)
-        r.encoding = 'UTF-8'
+        r.encoding = webEncoding
         soup = BeautifulSoup(r.text)
         # 写入文章的开头
         self.fictionTitle  = soup.select("#info h1")[0].text
@@ -119,7 +119,7 @@ class FictionSpider():
         try:
             # print(src)
             r = requests.get(src)
-            r.encoding = 'UTF-8'
+            r.encoding = webEncoding
             soup = BeautifulSoup(r.text)
             content  = soup.select("#content")[0].text
             content = re.sub(r'\xa0', "\n", content)
