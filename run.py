@@ -50,7 +50,6 @@ class FictionSpider():
         soup = BeautifulSoup(r.text)
         # 写入文章的开头
         self.fictionTitle  = soup.select("#info h1")[0].text
-        save(self.fictionTitle + "\n\n", self.fictionTitle+".txt", "w")
 
         chapterList = soup.select("#list dd")
         # 删除多余的信息（九章）
@@ -92,6 +91,8 @@ class FictionSpider():
 
         # 经过检查，都complete，即可以进行保存了
         print('开始写入： %s.txt'%self.fictionTitle)
+        
+        save(self.fictionTitle + "\n\n", self.fictionTitle+".txt", "w")
         for entry in self.chapter:
             title = entry['title']
             content = entry['content']
