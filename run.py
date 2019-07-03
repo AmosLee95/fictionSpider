@@ -54,7 +54,7 @@ class FictionSpider():
         chapterList = soup.select("#list dd")
         # 删除多余的信息（九章）
         for x in range(9 + jumpNum):
-            if x < 10:#强行消除警告，233
+            if x < 9 + jumpNum:#强行消除警告，233
                 chapterList.remove(chapterList[0])
 
         for entry in chapterList:
@@ -93,12 +93,16 @@ class FictionSpider():
         print('开始写入： %s.txt'%self.fictionTitle)
         
         save(self.fictionTitle + "\n\n", self.fictionTitle+".txt", "w")
-        for entry in self.chapter:
-            title = entry['title']
-            content = entry['content']
-            text = "%s\n\n%s\n\n\n\n"%(title,content)
+            
+        text = ""
+        for index in range(len(self.chapter)):
+            title = self.chapter[index]['title']
+            content = self.chapter[index]['content']
+            text = "%s%s\n\n%s\n\n\n\n"%(text, title, content)
             # print('%s'%title)
-            save(text, self.fictionTitle+".txt", "a")
+            if index % 30 == 0 or index == self.chapterNum - 1:
+                save(text, self.fictionTitle+".txt", "a")
+                text = ""
         print('完成了！')
         if self.unComplete:
             print('警告，有未完成！\n unComplete:%d'%self.unComplete)
