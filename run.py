@@ -11,13 +11,14 @@ from bs4 import BeautifulSoup
 import re
 import _thread
 import json
+import sys
 def save(line, fileName, mode):
-    file = open(fileName, mode,   encoding='utf-8')
+    file = open("%s/%s"%(sys.path[0],fileName), mode,   encoding='utf-8')
     file.write(line)
     file.close()
 def readJson(fileName):
     try:
-        file = open(fileName, 'r')
+        file = open("%s/%s"%(sys.path[0],fileName), 'r')
         config = json.load(file)
         file.close()
     except :
