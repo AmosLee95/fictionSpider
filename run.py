@@ -53,7 +53,8 @@ class FictionSpider():
         chapterList = soup.select("#list dd")
         # 删除多余的信息（九章）
         for x in range(9 + jumpNum):
-            chapterList.remove(chapterList[0])
+            if x < 10:#强行消除警告，233
+                chapterList.remove(chapterList[0])
 
         for entry in chapterList:
             entry = entry.contents[0]
