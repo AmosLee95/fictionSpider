@@ -16,10 +16,18 @@ def save(line, fileName, mode):
     file.write(line)
     file.close()
 def readJson(fileName):
-    file = open(fileName, 'r')
-    content = json.load(file)
-    file.close()
-    return content
+    try:
+        file = open(fileName, 'r')
+        config = json.load(file)
+        file.close()
+    except :
+        config = {'sourceLink': 'http://www.aixiashu.com/36/36732/', 'webEncoding': 'UTF-8', 'threadDapth': 100, 'jumpNum': 0}
+        content = json.dumps(config)
+        content = re.sub(r'(?<=[\{,]) *', "\n",content)
+        content = re.sub(r'(?=\})', "\n",content)
+        content = re.sub(r'\n"', '\n\t"',content)
+        save(content, fileName, "w")
+    return config
 
 class FictionSpider():
     def __init__(self, webEncoding):
