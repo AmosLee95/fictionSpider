@@ -88,7 +88,7 @@ class FictionSpider():
                 self.unCompleteSrc.append(entry['src'])
 
         # 经过检查，都complete，即可以进行保存了
-        print('开始写入')
+        print('开始写入： %s.txt'%self.fictionTitle)
         for entry in self.chapter:
             title = entry['title']
             content = entry['content']
@@ -102,28 +102,33 @@ class FictionSpider():
     def tryGetAChapterConternt(self):
         # 尝试看看谁没被用，就用起来
         # print('tryGetAChapterConternt\n')
+            
         for index in range(len(self.chapter)):
             if self.chapter[index]['state'] == 'static':
-                # print('[tryGetAChapterConternt] index : %d'%index)
-                self.chapter[index]['state'] = 'running'
-                src = self.chapter[index]['src']
-                content = self.getChapterContent(src)
-                if content == 'error':
-                    self.chapter[index]['state'] = 'static'
-                    # 已经漏掉了，得再读一次吧
-                    print("index -= 10")
-                    index -= 10
-                else:
-                    self.chapter[index]['content'] = content
-                    self.chapter[index]['state'] = 'complete'
-                    self.completeNum += 1
-                if self.completeNum == 1 :
-                    print("ChapterNum: %d"%self.chapterNum)
-                if self.completeNum % (self.chapterNum / 100) < 1 % (self.chapterNum / 100):
-                    print('%d%%'%(self.completeNum // (self.chapterNum / 100)))
-                else:
-                    if self.completeNum == self.chapterNum :
-                        print('100%%')
+                flag = True
+                while flag:
+                    # print('[tryGetAChapterConternt] index : %d'%index)
+                    self.chapter[index]['state'] = 'running'
+                    src = self.chapter[index]['src']
+                    
+                    content = self.getChapterContent(src)
+                    if content == 'error':
+                        self.chapter[index]['state'] = 'static'
+                        # flag = True #不用修改
+                    else:
+                        self.chapter[index]['content'] = content
+                        self.chapter[index]['state'] = 'complete'
+                        self.completeNum += 1
+                        flag = False
+
+                    # show something
+                    if self.completeNum == 1 :
+                        print("ChapterNum: %d"%self.chapterNum)
+                    if self.completeNum % (self.chapterNum / 100) < 1 % (self.chapterNum / 100):
+                        print('%d%%'%(self.completeNum // (self.chapterNum / 100)))
+                    else:
+                        if self.completeNum == self.chapterNum :
+                            print('100%%')
         self.runThread -= 1
         # print('kill a thread, left:%d\n'%self.runThread)
 
