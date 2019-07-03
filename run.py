@@ -4,24 +4,25 @@
 # webEncoding = 'gbk'
 
 
-sourceLink = 'http://www.aixiashu.com/36/36732/'
-webEncoding = 'UTF-8'
-threadDapth = 100
-jumpNum = 0
 
 
 import requests
 from bs4 import BeautifulSoup
 import re
 import _thread
+import json
 def save(line, fileName, mode):
     file = open(fileName, mode,   encoding='utf-8')
     file.write(line)
     file.close()
-
+def readJson(fileName):
+    file = open(fileName, 'r')
+    content = json.load(file)
+    file.close()
+    return content
 
 class FictionSpider():
-    def __init__(self):
+    def __init__(self, webEncoding):
         self.webEncoding = webEncoding
         self.chapter = []
         self.chapterNum = 0
@@ -135,7 +136,10 @@ class FictionSpider():
 
 
 
-fictionSpider = FictionSpider()
-fictionSpider.run(sourceLink, threadDapth, jumpNum)
+config = readJson('config.json')
+print(config)
+
+fictionSpider = FictionSpider(config["webEncoding"])
+fictionSpider.run(config["sourceLink"], config["threadDapth"], config["jumpNum"])
 
 
