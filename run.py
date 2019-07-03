@@ -33,7 +33,7 @@ class FictionSpider():
 
     def run(self, sourceLink, queueDepth, jumpNum = 0):
         r = requests.get(sourceLink)
-        r.encoding = webEncoding
+        r.encoding = self.webEncoding
         soup = BeautifulSoup(r.text)
         # 写入文章的开头
         self.fictionTitle  = soup.select("#info h1")[0].text
@@ -61,7 +61,7 @@ class FictionSpider():
         print("QueueDepth: %d\n"%queueDepth)
         print('============================================================')
         for x in range(queueDepth):
-            _thread.start_new_thread( self.tryGetAChapterConternt )
+            _thread.start_new_thread( self.tryGetAChapterConternt , ())
             self.runThread += 1
         # 检查是否都结束了
         while self.runThread:
@@ -120,7 +120,7 @@ class FictionSpider():
         try:
             # print(src)
             r = requests.get(src)
-            r.encoding = webEncoding
+            r.encoding = self.webEncoding
             soup = BeautifulSoup(r.text)
             content  = soup.select("#content")[0].text
             content = re.sub(r'\xa0', "\n", content)
