@@ -43,6 +43,7 @@ class FictionSpider():
         self.unCompleteSrc=[]
 
     def run(self, sourceLink, queueDepth, jumpNum = 0):
+        self.sourceLink = sourceLink
         r = requests.get(sourceLink)
         r.encoding = self.webEncoding
         soup = BeautifulSoup(r.text)
@@ -61,7 +62,7 @@ class FictionSpider():
             title = re.sub(r'[\.、]', "章", entry.text)
             title = re.sub(r'^第{0，1}', "第", title)+"\n\n"
             # title =  entry.text
-            src = "http://www.aixiashu.com%s"%entry.attrs['href']
+            src = "%s%s"%(re.search(r'.+com',self.sourceLink).group(0), entry.attrs['href'])
             # 记录起来
             self.chapter.append({'title':title,'content':'','src':src,'state':'static'})
             
