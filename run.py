@@ -27,6 +27,9 @@ def readJson(fileName):
         content = re.sub(r'(?=\})', "\n",content)
         content = re.sub(r'\n"', '\n\t"',content)
         save(content, fileName, "w")
+    print("============================\nget config")
+    print(config)
+    print("\n\n\n")
     return config
 
 class FictionSpider():
@@ -145,8 +148,6 @@ class FictionSpider():
 
 
 config = readJson('config.json')
-print(config)
-
 fictionSpider = FictionSpider(config["webEncoding"])
 fictionSpider.run(config["sourceLink"], config["threadDapth"], config["jumpNum"])
 
