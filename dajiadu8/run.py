@@ -49,20 +49,19 @@ class FictionSpider():
         r.encoding = self.webEncoding
         soup = BeautifulSoup(r.text)
         # 写入文章的开头
-        self.fictionTitle  = soup.select("#info h1")[0].text
+        self.fictionTitle  = soup.select("#left h1")[0].text
 
-        chapterList = soup.select("#list dd")
+        chapterList = soup.select("#booktext li a")
         # 删除多余的信息（九章）
-        for x in range(9 + jumpNum):
-            if x < 9 + jumpNum:#强行消除警告，233
+        for x in range(jumpNum):
+            if x < jumpNum:#强行消除警告，233
                 chapterList.remove(chapterList[0])
 
         for entry in chapterList:
-            entry = entry.contents[0]
             title = re.sub(r'[\.、]', "章", entry.text)
-            title = re.sub(r'^第{0，1}', "第", title)+"\n\n"
+            title = re.sub(r'^第?', "第", title)+"\n\n"
             # title =  entry.text
-            src = "%s%s"%(re.search(r'.+com',self.sourceLink).group(0), entry.attrs['href'])
+            src = "%s%s"%(re.search(r'.+/',self.sourceLink).group(0), entry.attrs['href'])
             # 记录起来
             self.chapter.append({'title':title,'content':'','src':src,'state':'static'})
             
@@ -146,7 +145,7 @@ class FictionSpider():
             r = requests.get(src)
             r.encoding = self.webEncoding
             soup = BeautifulSoup(r.text)
-            content  = soup.select("#content")[0].text
+            content  = soup.select("#content1")[0].text
             content = re.sub(r'\xa0', "\n", content)
             content = re.sub(r'\ufeff', "\n", content)
             content = re.sub(r'\n\n', "\n", content)
