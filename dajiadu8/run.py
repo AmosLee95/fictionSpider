@@ -1,11 +1,3 @@
-# http://www.aixiashu.com/30/30908/
-# webEncoding = 'UTF-8'
-# /https://www.booktxt.net/1_1482/
-# webEncoding = 'gbk'
-
-
-
-
 import requests
 from bs4 import BeautifulSoup
 import re
@@ -22,7 +14,7 @@ def readJson(fileName):
         config = json.load(file)
         file.close()
     except :
-        config = {'sourceLink': 'http://www.aixiashu.com/36/36732/', 'webEncoding': 'UTF-8', 'threadDapth': 100, 'jumpNum': 0}
+        config = {'sourceLink': 'https://www.dajiadu8.com/files/article/html/16/16135/index.html', 'webEncoding': 'gb2312', 'threadDapth': 100, 'jumpNum': 0}
         content = json.dumps(config)
         content = re.sub(r'(?<=[\{,]) *', "\n",content)
         content = re.sub(r'(?=\})', "\n",content)
