@@ -1,7 +1,7 @@
 # http://www.aixiashu.com/30/30908/
-# webEncoding = 'UTF-8'
+# catalogueEncoding = 'UTF-8'
 # /https://www.booktxt.net/1_1482/
-# webEncoding = 'gbk'
+# catalogueEncoding = 'gbk'
 
 
 
@@ -22,7 +22,13 @@ def readJson(fileName):
         config = json.load(file)
         file.close()
     except :
-        config = {'sourceLink': 'http://www.aixiashu.com/36/36732/', 'webEncoding': 'UTF-8', 'threadDapth': 100, 'jumpNum': 0}
+        config = {
+                    "sourceLink": "https://www.dajiadu8.com/files/article/html/39/39971/index.html",
+                    "catalogueEncoding": "gb2312",
+                    "chapterEncoding": "gbk",
+                    "threadDapth": 100,
+                    "jumpNum": 0
+                }
         content = json.dumps(config)
         content = re.sub(r'(?<=[\{,]) *', "\n",content)
         content = re.sub(r'(?=\})', "\n",content)
@@ -34,8 +40,9 @@ def readJson(fileName):
     return config
 
 class FictionSpider():
-    def __init__(self, webEncoding):
-        self.webEncoding = webEncoding
+    def __init__(self, catalogueEncoding, chapterEncoding):
+        self.catalogueEncoding = catalogueEncoding
+        self.chapterEncoding = chapterEncoding
         self.chapter = []
         self.chapterNum = 0
         self.completeNum = 0
@@ -46,7 +53,7 @@ class FictionSpider():
     def run(self, sourceLink, queueDepth, jumpNum = 0):
         self.sourceLink = sourceLink
         r = requests.get(sourceLink)
-        r.encoding = self.webEncoding
+        r.encoding = self.catalogueEncoding
         soup = BeautifulSoup(r.text)
         # 写入文章的开头
         self.fictionTitle  = soup.select("#left h1")[0].text
@@ -143,7 +150,9 @@ class FictionSpider():
         try:
             # print(src)
             r = requests.get(src)
-            r.encoding = self.webEncoding
+            r.encoding = self.chapterEncoding
+            if src == 'https://www.dajiadu8.com/files/article/html/39/39971/12416857.html':
+                print('https://www.dajiadu8.com/files/article/html/39/39971/12416857.html')
             soup = BeautifulSoup(r.text)
             content  = soup.select("#content1")[0].text
             content = re.sub(r'\xa0', "\n", content)
@@ -160,7 +169,7 @@ class FictionSpider():
 
 
 config = readJson('config.json')
-fictionSpider = FictionSpider(config["webEncoding"])
+fictionSpider = FictionSpider(config["catalogueEncoding"], config["chapterEncoding"])
 fictionSpider.run(config["sourceLink"], config["threadDapth"], config["jumpNum"])
 
 
