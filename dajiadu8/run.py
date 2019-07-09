@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # http://www.aixiashu.com/30/30908/
 # catalogueEncoding = 'UTF-8'
 # /https://www.booktxt.net/1_1482/
@@ -6,6 +7,8 @@
 
 
 
+=======
+>>>>>>> 64d655783c34807c6753a85406d892b87bf9be2f
 import requests
 from bs4 import BeautifulSoup
 import re
