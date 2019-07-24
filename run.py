@@ -11,21 +11,29 @@ def save(line, fileName, mode):
 def readJson(fileName):
     try:
         file = open("%s/%s"%(sys.path[0],fileName), 'r')
-        config = json.load(file)
+        configs = json.load(file)
         file.close()
     except :
-        config = {
+        configs = {
                     "sourceLink": "https://www.dajiadu8.com/files/article/html/39/39971/index.html",
                     "catalogueEncoding": "gb2312",
                     "chapterEncoding": "gbk",
                     "threadDapth": 100,
                     "jumpNum": 0
                 }
-        content = json.dumps(config)
+        content = json.dumps(configs)
         content = re.sub(r'(?<=[\{,]) *', "\n",content)
         content = re.sub(r'(?=\})', "\n",content)
         content = re.sub(r'\n"', '\n\t"',content)
         save(content, fileName, "w")
+    sourceLink = configs['sourceLink']
+    matchObj = re.search( r'(?<=www\.).+(?=\.com)', sourceLink)
+    if matchObj:
+        key = matchObj.group()
+    config = configs[key]
+    if not config:
+        print("config error!")
+    config['sourceLink'] =sourceLink 
     print("============================\nget config")
     print(config)
     print("\n\n\n")
@@ -42,15 +50,16 @@ class FictionSpider():
         self.unComplete = 0
         self.unCompleteSrc=[]
 
-    def run(self, sourceLink, queueDepth, jumpNum = 0):
+    def run(self, sourceLink, queueDepth, fitter, jumpNum = 0):
         self.sourceLink = sourceLink
+        self.fitter = fitter
         r = requests.get(sourceLink)
         r.encoding = self.catalogueEncoding
         soup = BeautifulSoup(r.text)
         # 写入文章的开头
-        self.fictionTitle  = soup.select("#left h1")[0].text
+        self.fictionTitle  = soup.select(self.fitter['fictionTitle'])[0].text
 
-        chapterList = soup.select("#booktext li a")
+        chapterList = soup.select(self.fitter['chapterList'])
         # 删除多余的信息（九章）
         for x in range(jumpNum):
             if x < jumpNum:#强行消除警告，233
@@ -60,7 +69,7 @@ class FictionSpider():
             title = re.sub(r'[\.、]', "章", entry.text)
             title = re.sub(r'^第?', "第", title)+"\n\n"
             # title =  entry.text
-            src = "%s%s"%(re.search(r'.+/',self.sourceLink).group(0), entry.attrs['href'])
+            src = "%s%s"%(re.search(self.fitter['r_src'],self.sourceLink).group(0), entry.attrs['href'])
             # 记录起来
             self.chapter.append({'title':title,'content':'','src':src,'state':'static'})
             
@@ -143,10 +152,8 @@ class FictionSpider():
             # print(src)
             r = requests.get(src)
             r.encoding = self.chapterEncoding
-            if src == 'https://www.dajiadu8.com/files/article/html/39/39971/12416857.html':
-                print('https://www.dajiadu8.com/files/article/html/39/39971/12416857.html')
             soup = BeautifulSoup(r.text)
-            content  = soup.select("#content1")[0].text
+            content  = soup.select(self.fitter['chapterContent'])[0].text
             content = re.sub(r'\xa0', "\n", content)
             content = re.sub(r'\ufeff', "\n", content)
             content = re.sub(r'\n\n', "\n", content)
@@ -162,6 +169,6 @@ class FictionSpider():
 
 config = readJson('config.json')
 fictionSpider = FictionSpider(config["catalogueEncoding"], config["chapterEncoding"])
-fictionSpider.run(config["sourceLink"], config["threadDapth"], config["jumpNum"])
+fictionSpider.run(config["sourceLink"], config["threadDapth"], config["fitter"], config["jumpNum"])
 
 
