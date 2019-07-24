@@ -27,7 +27,7 @@ def readJson(fileName):
         content = re.sub(r'\n"', '\n\t"',content)
         save(content, fileName, "w")
     sourceLink = configs['sourceLink']
-    matchObj = re.search( r'(?<=www\.).+(?=\.com)', sourceLink)
+    matchObj = re.search( r'(?<=www\.).+(?=\.)', sourceLink)
     if matchObj:
         key = matchObj.group()
     config = configs[key]
