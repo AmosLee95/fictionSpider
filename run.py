@@ -15,17 +15,53 @@ def readJson(fileName):
         file.close()
     except :
         configs = {
-                    "sourceLink": "https://www.dajiadu8.com/files/article/html/39/39971/index.html",
-                    "catalogueEncoding": "gb2312",
-                    "chapterEncoding": "gbk",
-                    "threadDapth": 100,
-                    "jumpNum": 0
-                }
-        content = json.dumps(configs)
-        content = re.sub(r'(?<=[\{,]) *', "\n",content)
-        content = re.sub(r'(?=\})', "\n",content)
-        content = re.sub(r'\n"', '\n\t"',content)
-        save(content, fileName, "w")
+	"sourceLink": "https://www.biquge.info/57_57727/",
+	"dajiadu8":{
+		"sourceLink": "https://www.dajiadu8.com/files/article/html/40/40250/index.html",
+		"catalogueEncoding": "gb2312",
+		"chapterEncoding": "gbk",
+		"threadDapth": 100,
+		"jumpNum": 0,
+		"fitter":{
+			"fictionTitle":"#left h1",
+			"chapterList":"#booktext li a",
+			"r_src":".+/",
+			"chapterContent":"#content1"
+		}
+		
+	},
+	"aixiashu":{
+		"sourceLink": "http://www.aixiashu.com/8/8615/",
+		"catalogueEncoding": "utf-8",
+		"chapterEncoding": "utf-8",
+		"threadDapth": 100,
+		"jumpNum": 9,
+		"fitter":{
+			"fictionTitle":"#info h1",
+			"chapterList":"#list dd a",
+			"r_src": ".+com",
+			"chapterContent":"#content"
+		}
+	},
+	"biquge":{
+		"sourceLink": "https://www.biquge.info/57_57727/",
+		"catalogueEncoding": "utf-8",
+		"chapterEncoding": "utf-8",
+		"threadDapth": 100,
+		"jumpNum": 0,
+		"fitter":{
+			"fictionTitle":"#info h1",
+			"chapterList":"#list dd a",
+			"r_src": ".+/",
+			"chapterContent":"#content"
+		}
+	}
+}
+        contents = json.dumps(configs)
+        contents = re.sub(r'(?<=[\{,]) *', "\n",content)
+        contents = re.sub(r'(?=\})', "\n",content)
+        contents = re.sub(r'\n"', '\n\t"',content)
+        save(contents, fileName, "w")
     sourceLink = configs['sourceLink']
     matchObj = re.search( r'(?<=www\.).+(?=\.)', sourceLink)
     if matchObj:
