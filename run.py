@@ -63,9 +63,10 @@ def readJson(fileName):
         content = re.sub(r'\n"', '\n\t"',content)
         save(content, fileName, "w")
     sourceLink = configs['sourceLink']
-    matchObj = re.search( r'(?<=www\.).+(?=\.)', sourceLink)
+    matchObj = re.search( r'(?<=www\.).+?(?=\.)', sourceLink)
     if matchObj:
         key = matchObj.group()
+    print(key)
     config = configs[key]
     if not config:
         print("config error!")
