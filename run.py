@@ -5,7 +5,12 @@ import _thread
 import json
 import sys
 def save(line, fileName, mode):
-    file = open("%s/%s"%(sys.path[0],fileName), mode,   encoding='utf-8')
+    try:
+        file = open("%s/%s"%(sys.path[0],fileName), mode,   encoding='utf-8')
+    except FileNotFoundError:
+        import os
+        os.makedirs("%s/%s"%(sys.path[0],re.sub(r'/.+','',fileName)))
+        file = open("%s/%s"%(sys.path[0],fileName), mode,   encoding='utf-8')
     file.write(line)
     file.close()
 def readJson(fileName):
@@ -65,12 +70,13 @@ def readJson(fileName):
     sourceLink = configs['sourceLink']
     matchObj = re.search( r'(?<=www\.).+?(?=\.)', sourceLink)
     if matchObj:
-        key = matchObj.group()
-    print(key)
-    config = configs[key]
+        website = matchObj.group()
+    print(website)
+    config = configs[website]
     if not config:
         print("config error!")
     config['sourceLink'] =sourceLink 
+    config["website"] = website
     print("============================\nget config")
     print(config)
     print("\n\n\n")
@@ -87,15 +93,16 @@ class FictionSpider():
         self.unComplete = 0
         self.unCompleteSrc=[]
 
-    def run(self, sourceLink, queueDepth, fitter, jumpNum = 0):
+    def run(self, sourceLink, queueDepth, fitter, website, jumpNum = 0):
         self.sourceLink = sourceLink
         self.fitter = fitter
+        self.website = website
         r = requests.get(sourceLink)
         r.encoding = self.catalogueEncoding
         soup = BeautifulSoup(r.text)
         # 写入文章的开头
         self.fictionTitle  = soup.select(self.fitter['fictionTitle'])[0].text
-
+        print(self.fictionTitle)
         chapterList = soup.select(self.fitter['chapterList'])
         # 删除多余的信息（九章）
         for x in range(jumpNum):
@@ -134,9 +141,9 @@ class FictionSpider():
                 self.unCompleteSrc.append(entry['src'])
 
         # 经过检查，都complete，即可以进行保存了
-        print('开始写入： %s.txt'%self.fictionTitle)
+        print('开始写入： %s/%s.txt'%(self.website, self.fictionTitle))
         
-        save(self.fictionTitle + "\n\n", self.fictionTitle+".txt", "w")
+        save(self.fictionTitle + "\n\n", self.website+"/"+self.fictionTitle+".txt", "w")
             
         text = ""
         for index in range(len(self.chapter)):
@@ -145,7 +152,7 @@ class FictionSpider():
             text = "%s%s\n\n%s\n\n\n\n"%(text, title, content)
             # print('%s'%title)
             if index % 30 == 0 or index == self.chapterNum - 1:
-                save(text, self.fictionTitle+".txt", "a")
+                save(text, self.website+"/"+self.fictionTitle+".txt", "a")
                 text = ""
         print('完成了！')
         if self.unComplete:
@@ -206,6 +213,6 @@ class FictionSpider():
 
 config = readJson('config.json')
 fictionSpider = FictionSpider(config["catalogueEncoding"], config["chapterEncoding"])
-fictionSpider.run(config["sourceLink"], config["threadDapth"], config["fitter"], config["jumpNum"])
+fictionSpider.run(config["sourceLink"], config["threadDapth"], config["fitter"], config["website"], config["jumpNum"])
 
 
