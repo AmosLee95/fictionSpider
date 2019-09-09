@@ -113,6 +113,7 @@ class FictionSpider():
             title = re.sub(r'[\.、]', "章", entry.text)
             title = re.sub(r'^第?', "第", title)+"\n\n"
             # title =  entry.text
+            # print(self.sourceLink)
             src = "%s%s"%(re.search(self.fitter['r_src'],self.sourceLink).group(0), entry.attrs['href'])
             # 记录起来
             self.chapter.append({'title':title,'content':'','src':src,'state':'static'})
