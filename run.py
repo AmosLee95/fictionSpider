@@ -13,73 +13,44 @@ def save(line, fileName, mode):
         file = open("%s/%s"%(sys.path[0],fileName), mode,   encoding='utf-8')
     file.write(line)
     file.close()
-def readJson(fileName):
+def readJson():
+    # read configs
+    file = open("%s/%s"%(sys.path[0],'config.json'), 'r')
+    configs = json.load(file)
+    file.close()
+    # read source url
     try:
-        file = open("%s/%s"%(sys.path[0],fileName), 'r')
-        configs = json.load(file)
+        file = open("%s/%s"%(sys.path[0],'sourceUrl.json'), 'r')
+        sourceLinkFile = json.load(file)
         file.close()
-    except :
-        configs = {
-            "sourceLink": "https://www.biquge.info/57_57727/",
-            "dajiadu8":{
-                "sourceLink": "https://www.dajiadu8.com/files/article/html/40/40250/index.html",
-                "catalogueEncoding": "gb2312",
-                "chapterEncoding": "gbk",
-                "threadDapth": 100,
-                "jumpNum": 0,
-                "fitter":{
-                    "fictionTitle":"#left h1",
-                    "chapterList":"#booktext li a",
-                    "r_src":".+/",
-                    "chapterContent":"#content1"
-                }
-                
-            },
-            "aixiashu":{
-                "sourceLink": "http://www.aixiashu.com/8/8615/",
-                "catalogueEncoding": "utf-8",
-                "chapterEncoding": "utf-8",
-                "threadDapth": 100,
-                "jumpNum": 9,
-                "fitter":{
-                    "fictionTitle":"#info h1",
-                    "chapterList":"#list dd a",
-                    "r_src": ".+com",
-                    "chapterContent":"#content"
-                }
-            },
-            "biquge":{
-                "sourceLink": "https://www.biquge.info/57_57727/",
-                "catalogueEncoding": "utf-8",
-                "chapterEncoding": "utf-8",
-                "threadDapth": 100,
-                "jumpNum": 0,
-                "fitter":{
-                    "fictionTitle":"#info h1",
-                    "chapterList":"#list dd a",
-                    "r_src": ".+/",
-                    "chapterContent":"#content"
-                }
-            }
-        }
-        content = json.dumps(configs)
-        content = re.sub(r'(?<=[\{,]) *', "\n",content)
-        content = re.sub(r'(?=\})', "\n",content)
-        content = re.sub(r'\n"', '\n\t"',content)
-        save(content, fileName, "w")
-    sourceLink = configs['sourceLink']
+    except:
+        sourceLinkFile = {"sourceLink": "http://www.biquku.la/2/2553/"}
+
+    sourceLink = sourceLinkFile['sourceLink']
+    # alter sourceLinkFile 
+    sourceLinkFile['urls'] = []
+    for index in configs:
+        sourceLinkFile['urls'].append(configs[index]['sourceLink'])
+    content = json.dumps(sourceLinkFile)
+    content = re.sub(r'(?<=[\{,\[]) *', "\n",content)
+    content = re.sub(r'(?=[\}\]])', "\n",content)
+    content = re.sub(r'\n"', '\n\t"',content)
+    save(content, 'sourceUrl.json', "w")
+
+    # get config
     matchObj = re.search( r'(?<=www\.).+?(?=\.)', sourceLink)
     if matchObj:
         website = matchObj.group()
-    print(website)
+    # print(website)
     config = configs[website]
     if not config:
         print("config error!")
     config['sourceLink'] =sourceLink 
     config["website"] = website
-    print("============================\nget config")
-    print(config)
-    print("\n\n\n")
+    # print("============================\nget config")
+    # print(config)
+    # print("\n\n\n")
+    # print("============================\nget config")
     return config
 
 class FictionSpider():
@@ -142,9 +113,9 @@ class FictionSpider():
                 self.unCompleteSrc.append(entry['src'])
 
         # 经过检查，都complete，即可以进行保存了
-        print('开始写入： %s/%s.txt'%(self.website, self.fictionTitle))
-        
-        save(self.fictionTitle + "\n\n", self.website+"/"+self.fictionTitle+".txt", "w")
+        saveTo = "bookrack/"+self.fictionTitle+"_"+self.website+".txt"
+        print('开始写入： %s'%(saveTo))
+        save(self.fictionTitle + "\n\n", saveTo, "w")
             
         text = ""
         for index in range(len(self.chapter)):
@@ -153,7 +124,7 @@ class FictionSpider():
             text = "%s%s\n\n%s\n\n\n\n"%(text, title, content)
             # print('%s'%title)
             if index % 30 == 0 or index == self.chapterNum - 1:
-                save(text, self.website+"/"+self.fictionTitle+".txt", "a")
+                save(text, saveTo, "a")
                 text = ""
         print('完成了！')
         if self.unComplete:
@@ -182,13 +153,13 @@ class FictionSpider():
                         flag = False
 
                     # show something
-                    if self.completeNum == 1 :
-                        print("ChapterNum: %d"%self.chapterNum)
                     if self.completeNum % (self.chapterNum / 100) < 1 % (self.chapterNum / 100):
-                        print('%d%%'%(self.completeNum // (self.chapterNum / 100)))
+                        percent = round(1.0 * self.completeNum / self.chapterNum * 100,2)
+                        print('爬取进度 : %s [%d/%d]'%(str(percent)+'%',self.completeNum,self.chapterNum),end='\r')
                     else:
                         if self.completeNum == self.chapterNum :
-                            print('100%%')
+                            percent = 100.0
+                            print('爬取进度 : %s [%d/%d]'%(str(percent)+'%',self.completeNum,self.chapterNum),end='\n')
         self.runThread -= 1
         # print('kill a thread, left:%d\n'%self.runThread)
 
@@ -212,7 +183,7 @@ class FictionSpider():
 
 
 
-config = readJson('config.json')
+config = readJson()
 fictionSpider = FictionSpider(config["catalogueEncoding"], config["chapterEncoding"])
 fictionSpider.run(config["sourceLink"], config["threadDapth"], config["fitter"], config["website"], config["jumpNum"])
 
