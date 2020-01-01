@@ -177,7 +177,7 @@ class FictionSpider():
             content = re.sub(r'\n\n', "\n", content)
             content = "\n\n"+re.sub(r'\n', "\n\n", content)
         except:
-            print('异常！')
+            print('异常！                          ')
             content = 'error'
         return content
 
