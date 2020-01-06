@@ -76,9 +76,9 @@ class FictionSpider():
         print(self.fictionTitle)
         chapterList = soup.select(self.fitter['chapterList'])
         # 删除多余的信息（九章）
-        for x in range(jumpNum):
-            if x < jumpNum:#强行消除警告，233
-                chapterList.remove(chapterList[0])
+        while jumpNum:
+            chapterList.remove(chapterList[0])
+            jumpNum -= 1
 
         for entry in chapterList:
             title = re.sub(r'[\.、]', "章", entry.text)
@@ -96,9 +96,10 @@ class FictionSpider():
         queueDepth = queueDepth if queueDepth < self.chapterNum else self.chapterNum
         print("QueueDepth: %d\n"%queueDepth)
         print('============================================================')
-        for x in range(queueDepth):
+        while queueDepth:
             _thread.start_new_thread( self.tryGetAChapterConternt , ())
             self.runThread += 1
+            queueDepth -= 1
         # 检查是否都结束了
         while self.runThread:
             pass
@@ -155,11 +156,11 @@ class FictionSpider():
                     # show something
                     if self.completeNum % (self.chapterNum / 100) < 1 % (self.chapterNum / 100):
                         percent = round(1.0 * self.completeNum / self.chapterNum * 100,2)
-                        print('爬取进度 : %s [%d/%d]                                                        '%(str(percent)+'%',self.completeNum,self.chapterNum),end='\r')
+                        print('爬取进度 : %s [%d/%d]'%(str(percent)+'%',self.completeNum,self.chapterNum),end='\r')
                     else:
                         if self.completeNum == self.chapterNum :
                             percent = 100.0
-                            print('爬取进度 : %s [%d/%d]                                                        '%(str(percent)+'%',self.completeNum,self.chapterNum),end='\n')
+                            print('爬取进度 : %s [%d/%d]'%(str(percent)+'%',self.completeNum,self.chapterNum),end='\n')
         self.runThread -= 1
         # print('kill a thread, left:%d\n'%self.runThread)
 
@@ -177,7 +178,7 @@ class FictionSpider():
             content = re.sub(r'\n\n', "\n", content)
             content = "\n\n"+re.sub(r'\n', "\n\n", content)
         except:
-            print('异常！                          ')
+            print('异常！           ',end='\r')
             content = 'error'
         return content
 
