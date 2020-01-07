@@ -155,11 +155,11 @@ class FictionSpider():
                     # show something
                     if self.completeNum % (self.chapterNum / 100) < 1 % (self.chapterNum / 100):
                         percent = round(1.0 * self.completeNum / self.chapterNum * 100,2)
-                        print('爬取进度 : %s [%d/%d]                                                        '%(str(percent)+'%',self.completeNum,self.chapterNum),end='\r')
+                        print('爬取进度 : %s [%d/%d]'%(str(percent)+'%',self.completeNum,self.chapterNum))
                     else:
                         if self.completeNum == self.chapterNum :
                             percent = 100.0
-                            print('爬取进度 : %s [%d/%d]                                                        '%(str(percent)+'%',self.completeNum,self.chapterNum),end='\n')
+                            print('爬取进度 : %s [%d/%d]'%(str(percent)+'%',self.completeNum,self.chapterNum))
         self.runThread -= 1
         # print('kill a thread, left:%d\n'%self.runThread)
 
@@ -177,7 +177,7 @@ class FictionSpider():
             content = re.sub(r'\n\n', "\n", content)
             content = "\n\n"+re.sub(r'\n', "\n\n", content)
         except:
-            print('异常！                          ')
+            print('异常！')
             content = 'error'
         return content
 

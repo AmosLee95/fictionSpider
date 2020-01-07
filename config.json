@@ -12,8 +12,8 @@
 			"chapterContent": "#content1"
 		}
 	},
-	"aixiashu": {
-		"sourceLink": "http://www.aixiashu.com/8/8615/",
+	"aixiawx": {
+		"sourceLink": "http://www.aixiawx.com/8/8615/",
 		"catalogueEncoding": "utf-8",
 		"chapterEncoding": "utf-8",
 		"threadDapth": 100,
@@ -69,10 +69,10 @@
 		"catalogueEncoding": "utf-8",
 		"chapterEncoding": "utf-8",
 		"threadDapth": 100,
-		"jumpNum": 0,
+		"jumpNum": 9,
 		"fitter": {
-			"fictionTitle": "#xiaoshuo59881 h1",
-			"chapterList": "#novel59881 dd a",
+			"fictionTitle": ".xiaoshuo h1",
+			"chapterList": ".novel_list dd a",
 			"r_src": ".+cc",
 			"chapterContent": ".content"
 		}
