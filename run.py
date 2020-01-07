@@ -76,9 +76,9 @@ class FictionSpider():
         print(self.fictionTitle)
         chapterList = soup.select(self.fitter['chapterList'])
         # 删除多余的信息（九章）
-        for x in range(jumpNum):
-            if x < jumpNum:#强行消除警告，233
-                chapterList.remove(chapterList[0])
+        while jumpNum:
+            chapterList.remove(chapterList[0])
+            jumpNum -= 1
 
         for entry in chapterList:
             title = re.sub(r'[\.、]', "章", entry.text)
@@ -96,9 +96,10 @@ class FictionSpider():
         queueDepth = queueDepth if queueDepth < self.chapterNum else self.chapterNum
         print("QueueDepth: %d\n"%queueDepth)
         print('============================================================')
-        for x in range(queueDepth):
+        while queueDepth:
             _thread.start_new_thread( self.tryGetAChapterConternt , ())
             self.runThread += 1
+            queueDepth -= 1
         # 检查是否都结束了
         while self.runThread:
             pass
