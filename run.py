@@ -1,5 +1,14 @@
-import requests
-from bs4 import BeautifulSoup
+
+try:
+    import requests
+    from bs4 import BeautifulSoup
+except :
+    import os
+    os.system('pip install beautifulsoup4')
+    os.system('pip install requests')
+    import requests
+    from bs4 import BeautifulSoup
+
 import re
 import _thread
 import json
@@ -130,6 +139,7 @@ class FictionSpider():
         print('完成了！')
         if self.unComplete:
             print('警告，有未完成！\n unComplete:%d'%self.unComplete)
+            print(self.unCompleteSrc)
 
     def tryGetAChapterConternt(self):
         # 尝试看看谁没被用，就用起来
@@ -156,11 +166,11 @@ class FictionSpider():
                     # show something
                     if self.completeNum % (self.chapterNum / 100) < 1 % (self.chapterNum / 100):
                         percent = round(1.0 * self.completeNum / self.chapterNum * 100,2)
-                        print('爬取进度 : %s [%d/%d]'%(str(percent)+'%',self.completeNum,self.chapterNum))
+                        print('爬取进度 : %.2f%%  [%d/%d]'%(percent,self.completeNum,self.chapterNum))
                     else:
                         if self.completeNum == self.chapterNum :
                             percent = 100.0
-                            print('爬取进度 : %s [%d/%d]'%(str(percent)+'%',self.completeNum,self.chapterNum))
+                            print('爬取进度 : %.2f%%  [%d/%d]'%(percent,self.completeNum,self.chapterNum))
         self.runThread -= 1
         # print('kill a thread, left:%d\n'%self.runThread)
 
