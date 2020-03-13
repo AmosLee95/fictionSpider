@@ -42,7 +42,7 @@
 		"sourceLink": "https://www.boquge.com/book/27169/",
 		"catalogueEncoding": "gbk",
 		"chapterEncoding": "gbk",
-		"threadDapth": 100,
+		"threadDapth": 5,
 		"jumpNum": 0,
 		"fitter": {
 			"fictionTitle": ".list-group h1",
