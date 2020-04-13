@@ -76,5 +76,18 @@
 			"r_src": ".+cc",
 			"chapterContent": ".content"
 		}
+	},
+	"booktxt": {
+		"sourceLink": "https://www.booktxt.com",
+		"catalogueEncoding": "gbk",
+		"chapterEncoding": "gbk",
+		"threadDapth": 100,
+		"jumpNum": 9,
+		"fitter": {
+			"fictionTitle": "#info h1",
+			"chapterList": "#list dd a",
+			"r_src": ".+com",
+			"chapterContent": "#content"
+		}
 	}
 }
