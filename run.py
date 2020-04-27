@@ -4,6 +4,7 @@ import re
 import _thread
 import json
 import sys
+import time
 def save(line, fileName, mode):
     try:
         file = open("%s/%s"%(sys.path[0],fileName), mode,   encoding='utf-8')
@@ -24,9 +25,10 @@ def readJson():
         sourceLinkFile = json.load(file)
         file.close()
     except:
-        sourceLinkFile = {"sourceLink": "http://www.biquku.la/2/2553/"}
+        sourceLinkFile = {"sourceLink": "http://www.biquku.la/2/2553/","jumpNum": 0}
 
     sourceLink = sourceLinkFile['sourceLink']
+    jumpNum = sourceLinkFile['jumpNum']
     # alter sourceLinkFile 
     sourceLinkFile['urls'] = []
     for index in configs:
@@ -47,6 +49,8 @@ def readJson():
         print("config error!")
     config['sourceLink'] =sourceLink 
     config["website"] = website
+    config["jumpNum"] = config["jumpNum"] + jumpNum
+    
     # print("============================\nget config")
     # print(config)
     # print("\n\n\n")
@@ -122,7 +126,7 @@ class FictionSpider():
         for index in range(len(self.chapter)):
             title = self.chapter[index]['title']
             content = self.chapter[index]['content']
-            text = "%s%s\n\n%s\n\n\n\n"%(text, title, content)
+            text = "%s%s\n%s\n"%(text, title, content)
             # print('%s'%title)
             if index % 30 == 0 or index == self.chapterNum - 1:
                 save(text, saveTo, "a")
@@ -130,6 +134,7 @@ class FictionSpider():
         print('完成了！')
         if self.unComplete:
             print('警告，有未完成！\n unComplete:%d'%self.unComplete)
+            print(self.unCompleteSrc)
 
     def tryGetAChapterConternt(self):
         # 尝试看看谁没被用，就用起来
@@ -144,6 +149,7 @@ class FictionSpider():
                     src = self.chapter[index]['src']
                     
                     content = self.getChapterContent(src)
+                    time.sleep(1)
                     if content == 'error':
                         self.chapter[index]['state'] = 'static'
                         # flag = True #不用修改
@@ -167,7 +173,7 @@ class FictionSpider():
     def getChapterContent(self, src):
         try:
             # print(src)
-            r = requests.get(src)
+            r = requests.get(src,timeout=30)
             r.encoding = self.chapterEncoding
             soup = BeautifulSoup(r.text)
             content  = soup.select(self.fitter['chapterContent'])[0].text
