@@ -78,11 +78,11 @@
 		}
 	},
 	"booktxt": {
-		"sourceLink": "https://www.booktxt.com/19_19282/",
+		"sourceLink": "https://www.booktxt.com",
 		"catalogueEncoding": "gbk",
 		"chapterEncoding": "gbk",
 		"threadDapth": 100,
-		"jumpNum": 0,
+		"jumpNum": 9,
 		"fitter": {
 			"fictionTitle": "#info h1",
 			"chapterList": "#list dd a",
