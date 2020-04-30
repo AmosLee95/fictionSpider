@@ -8,7 +8,7 @@
 		"fitter": {
 			"fictionTitle": "#left h1",
 			"chapterList": "#booktext li a",
-			"r_src": ".+/",
+			"websiteEndRegex": ".+/",
 			"chapterContent": "#content1"
 		}
 	},
@@ -21,7 +21,7 @@
 		"fitter": {
 			"fictionTitle": "#info h1",
 			"chapterList": "#list dd a",
-			"r_src": ".+com",
+			"websiteEndRegex": ".+com",
 			"chapterContent": "#content"
 		}
 	},
@@ -34,7 +34,7 @@
 		"fitter": {
 			"fictionTitle": "#info h1",
 			"chapterList": "#list dd a",
-			"r_src": ".+/",
+			"websiteEndRegex": ".+/",
 			"chapterContent": "#content"
 		}
 	},
@@ -47,7 +47,7 @@
 		"fitter": {
 			"fictionTitle": ".list-group h1",
 			"chapterList": "#chapters-list li a",
-			"r_src": ".+com",
+			"websiteEndRegex": ".+com",
 			"chapterContent": "#txtContent"
 		}
 	},
@@ -60,7 +60,7 @@
 		"fitter": {
 			"fictionTitle": "#info h1",
 			"chapterList": "#list dd a",
-			"r_src": ".+/",
+			"websiteEndRegex": ".+/",
 			"chapterContent": "#content"
 		}
 	},
@@ -73,9 +73,13 @@
 		"fitter": {
 			"fictionTitle": ".xiaoshuo h1",
 			"chapterList": ".novel_list dd a",
-			"r_src": ".+cc",
+			"websiteEndRegex": ".+cc",
 			"chapterContent": ".content"
-		}
+		},
+		"replaceRegex": [
+		"^您可以在百度里搜索.+查找最新章节！\\n\\n",
+		"        .+最新章节地址.+html\\n\\n.+全文阅读地.+\\n\\n.+\\n\\n.+\\n\\n.+\\n\\n.+\\(www\\.soxs\\.cc\\)\\n\\n"
+	]
 	},
 	"booktxt": {
 		"sourceLink": "https://www.booktxt.com",
@@ -86,7 +90,7 @@
 		"fitter": {
 			"fictionTitle": "#info h1",
 			"chapterList": "#list dd a",
-			"r_src": ".+com",
+			"websiteEndRegex": ".+com",
 			"chapterContent": "#content"
 		}
 	}

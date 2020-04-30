@@ -23,43 +23,60 @@ def save(line, fileName, mode):
     file.write(line)
     file.close()
 def readJson():
+
     # read configs
-    file = open("%s/%s"%(sys.path[0],'config.json'), 'r')
+    file = open("%s/%s"%(sys.path[0],'config.json'), 'r', encoding='utf-8')
     configs = json.load(file)
     file.close()
-    # read source url
+
+    # read sourceLinkFile
     try:
-        file = open("%s/%s"%(sys.path[0],'sourceUrl.json'), 'r')
+        file = open("%s/%s"%(sys.path[0],'sourceUrl.json'), 'r', encoding='utf-8')
         sourceLinkFile = json.load(file)
         file.close()
     except:
-        sourceLinkFile = {"sourceLink": "http://www.biquku.la/2/2553/"}
+        sourceLinkFile = {"sourceLink": "http://www.biquku.la/2/2553/","jumpNum":0,"replaceRegex":[]}
 
-    sourceLink = sourceLinkFile['sourceLink']
-    # alter sourceLinkFile 
+    # update sourceLinkFile 
     sourceLinkFile['urls'] = []
+    # sourceLinkFile["replaceRegex"] = [r"^您可以在百度里搜索.+查找最新章节！\n\n",r"        .+最新章节地址.+html\n\n.+全文阅读地.+\n\n.+\n\n.+\n\n.+\n\n.+\(www\.soxs\.cc\)\n\n"]
+    # print(sourceLinkFile["replaceRegex"][0])
+    # print(sourceLinkFile["replaceRegex"][1])
     for index in configs:
         sourceLinkFile['urls'].append(configs[index]['sourceLink'])
-    content = json.dumps(sourceLinkFile)
-    content = re.sub(r'(?<=[\{,\[]) *', "\n",content)
-    content = re.sub(r'(?=[\}\]])', "\n",content)
-    content = re.sub(r'\n"', '\n\t"',content)
+    content = json.dumps(sourceLinkFile, ensure_ascii =False, indent=4)
     save(content, 'sourceUrl.json', "w")
 
     # get config
+    sourceLink = sourceLinkFile['sourceLink']
     matchObj = re.search( r'(?<=www\.).+?(?=\.)', sourceLink)
     if matchObj:
         website = matchObj.group()
-    # print(website)
+
+    print("current website:%s"%website)
     config = configs[website]
     if not config:
         print("config error!")
+        
+    # merge
     config['sourceLink'] =sourceLink 
     config["website"] = website
-    # print("============================\nget config")
-    # print(config)
-    # print("\n\n\n")
-    # print("============================\nget config")
+    try:
+        config["jumpNum"] += sourceLinkFile['jumpNum']
+    except:
+        pass
+
+    try:
+        config["replaceRegex"] += sourceLinkFile['replace']
+        config["replaceRegex"] = list(set(config["replaceRegex"]))
+    except:
+        pass
+
+
+    print("========get config====================")
+    print(config)
+    print("\n\n\n")
+    print("========get config====================")
     return config
 
 class FictionSpider():
@@ -73,10 +90,11 @@ class FictionSpider():
         self.unComplete = 0
         self.unCompleteSrc=[]
 
-    def run(self, sourceLink, queueDepth, fitter, website, jumpNum = 0):
+    def run(self, sourceLink, queueDepth, fitter, website, replaceRegex, jumpNum = 0):
         self.sourceLink = sourceLink
         self.fitter = fitter
         self.website = website
+        self.replaceRegex = replaceRegex
         r = requests.get(sourceLink)
         r.encoding = self.catalogueEncoding
         soup = BeautifulSoup(r.text)
@@ -90,11 +108,11 @@ class FictionSpider():
             jumpNum -= 1
 
         for entry in chapterList:
-            title = re.sub(r'[\.、]', "章", entry.text)
+            title = re.sub(r'[\.、]', "章", entry.text, 1)
             title = re.sub(r'^第?', "第", title)+"\n\n"
             # title =  entry.text
             # print(self.sourceLink)
-            src = "%s%s"%(re.search(self.fitter['r_src'],self.sourceLink).group(0), entry.attrs['href'])
+            src = "%s%s"%(re.search(self.fitter['websiteEndRegex'],self.sourceLink).group(0), entry.attrs['href'])
             # 记录起来
             self.chapter.append({'title':title,'content':'','src':src,'state':'static'})
             
@@ -187,6 +205,9 @@ class FictionSpider():
             content = re.sub(r'\n\n', "\n", content)
             content = re.sub(r'\n\n', "\n", content)
             content = "\n\n"+re.sub(r'\n', "\n\n", content)
+
+            for replaceRegex in self.replaceRegex:
+                content = re.sub(replaceRegex, "", content)
         except:
             print('异常！')
             content = 'error'
@@ -196,6 +217,6 @@ class FictionSpider():
 
 config = readJson()
 fictionSpider = FictionSpider(config["catalogueEncoding"], config["chapterEncoding"])
-fictionSpider.run(config["sourceLink"], config["threadDapth"], config["fitter"], config["website"], config["jumpNum"])
+fictionSpider.run(config["sourceLink"], config["threadDapth"], config["fitter"], config["website"], config["replaceRegex"], config["jumpNum"])
 
 
