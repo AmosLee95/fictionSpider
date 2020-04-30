@@ -35,7 +35,7 @@ def readJson():
         sourceLinkFile = json.load(file)
         file.close()
     except:
-        sourceLinkFile = {"sourceLink": "http://www.biquku.la/2/2553/","jumpNum":0,"replaceRegex":[]}
+        sourceLinkFile = {"sourceLink": "http://www.biquku.la/2/2553/","jumpNum":0,"threadDapth": 100,"replaceRegex":[]}
 
     # update sourceLinkFile 
     sourceLinkFile['urls'] = []
@@ -63,6 +63,11 @@ def readJson():
     config["website"] = website
     try:
         config["jumpNum"] += sourceLinkFile['jumpNum']
+    except:
+        pass
+
+    try:
+        config["threadDapth"] = min(config["threadDapth"], sourceLinkFile['threadDapth'])
     except:
         pass
 
