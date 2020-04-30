@@ -42,7 +42,7 @@
 		"sourceLink": "https://www.boquge.com/book/27169/",
 		"catalogueEncoding": "gbk",
 		"chapterEncoding": "gbk",
-		"threadDapth": 5,
+		"threadDapth": 1,
 		"jumpNum": 0,
 		"fitter": {
 			"fictionTitle": ".list-group h1",
@@ -55,7 +55,7 @@
 		"sourceLink": "http://www.biquku.la/23/23315/",
 		"catalogueEncoding": "utf-8",
 		"chapterEncoding": "utf-8",
-		"threadDapth": 100,
+		"threadDapth": 1,
 		"jumpNum": 0,
 		"fitter": {
 			"fictionTitle": "#info h1",
@@ -94,4 +94,8 @@
 			"chapterContent": "#content"
 		}
 	}
+
+
+
+	
 }
