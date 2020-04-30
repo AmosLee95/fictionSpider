@@ -97,7 +97,7 @@ class FictionSpider():
         self.replaceRegex = replaceRegex
         r = requests.get(sourceLink)
         r.encoding = self.catalogueEncoding
-        soup = BeautifulSoup(r.text)
+        soup = BeautifulSoup(r.text, features="html.parser")
         # 写入文章的开头
         self.fictionTitle  = soup.select(self.fitter['fictionTitle'])[0].text
         print(self.fictionTitle)
@@ -197,7 +197,7 @@ class FictionSpider():
             # print(src)
             r = requests.get(src)
             r.encoding = self.chapterEncoding
-            soup = BeautifulSoup(r.text)
+            soup = BeautifulSoup(r.text, features="html.parser")
             content  = soup.select(self.fitter['chapterContent'])[0].text
             content = re.sub(r'\xa0', "\n", content)
             content = re.sub(r'\ufeff', "\n", content)
