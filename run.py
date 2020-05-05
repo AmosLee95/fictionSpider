@@ -214,7 +214,7 @@ class FictionSpider():
             content = "\n\n"+re.sub(r'\n', "\n\n", content)
 
             for replaceRegex in self.replaceRegex:
-                content = re.sub(replaceRegex, "", content)
+                content = re.sub(replaceRegex[0], replaceRegex[1], content)
         except:
             print('异常！')
             content = 'error'
