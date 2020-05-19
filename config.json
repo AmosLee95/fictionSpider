@@ -10,7 +10,8 @@
 			"chapterList": "#booktext li a",
 			"websiteEndRegex": ".+/",
 			"chapterContent": "#content1"
-		}
+		},
+		"replaceRegex":[]
 	},
 	"aixiawx": {
 		"sourceLink": "http://www.aixiawx.com/8/8615/",
@@ -23,7 +24,8 @@
 			"chapterList": "#list dd a",
 			"websiteEndRegex": ".+com",
 			"chapterContent": "#content"
-		}
+		},
+		"replaceRegex":[]
 	},
 	"dawenxue": {
 		"sourceLink": "https://www.dawenxue.net/5592/",
@@ -36,20 +38,22 @@
 			"chapterList": "#list dd a",
 			"websiteEndRegex": ".+/",
 			"chapterContent": "#content"
-		}
+		},
+		"replaceRegex":[]
 	},
 	"boquge": {
 		"sourceLink": "https://www.boquge.com/book/27169/",
 		"catalogueEncoding": "gbk",
 		"chapterEncoding": "gbk",
-		"threadDapth": 1,
+		"threadDapth": 10,
 		"jumpNum": 0,
 		"fitter": {
 			"fictionTitle": ".list-group h1",
 			"chapterList": "#chapters-list li a",
 			"websiteEndRegex": ".+com",
 			"chapterContent": "#txtContent"
-		}
+		},
+		"replaceRegex":[]
 	},
 	"biquku": {
 		"sourceLink": "http://www.biquku.la/23/23315/",
@@ -62,7 +66,8 @@
 			"chapterList": "#list dd a",
 			"websiteEndRegex": ".+/",
 			"chapterContent": "#content"
-		}
+		},
+		"replaceRegex":[]
 	},
 	"soxs": {
 		"sourceLink": "https://www.soxs.cc/HeiKeJiZhiZaoXiTong/",
@@ -93,7 +98,8 @@
 			"chapterList": "#list dd a",
 			"websiteEndRegex": ".+com",
 			"chapterContent": "#content"
-		}
+		},
+		"replaceRegex":[]
 	}
 
 
