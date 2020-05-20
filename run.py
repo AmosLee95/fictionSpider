@@ -36,7 +36,7 @@ def readJson():
         sourceLinkFile = json.load(file)
         file.close()
     except:
-        sourceLinkFile = {"sourceLink": "http://www.biquku.la/2/2553/","jumpNum":0,"replaceRegex":{},"threadDapth": 100,"replaceRegex":[]}
+        sourceLinkFile = {"sourceLink": "http://www.biquku.la/2/2553/","jumpNum":0,"replaceRegex":[],"threadDapth": 100,"replaceRegex":[]}
 
     # update sourceLinkFile 
     sourceLinkFile['urls'] = []
