@@ -53,7 +53,9 @@
 			"websiteEndRegex": ".+com",
 			"chapterContent": "#txtContent"
 		},
-		"replaceRegex":[]
+		"replaceRegex":[
+			["try\\{mad1\\(\\);\\} catch\\(ex\\)\\{\\}",""]
+		]
 	},
 	"biquku": {
 		"sourceLink": "http://www.biquku.la/23/23315/",
