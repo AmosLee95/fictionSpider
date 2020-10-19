@@ -103,9 +103,19 @@
 			"chapterContent": "#content"
 		},
 		"replaceRegex":[]
-	}
-
-
-
-	
+	},
+	"chinawuxi": {
+		"sourceLink": "https://www.chinawuxi.net/du/55418/",
+		"catalogueEncoding": "gbk",
+		"chapterEncoding": "gbk",
+		"threadDapth": 100,
+		"jumpNum": 9,
+		"fitter": {
+			"fictionTitle": ".book-text h1",
+			"chapterList": ".book-chapter-list li a",
+			"websiteEndRegex": ".+/",
+			"chapterContent": "#txt"
+		},
+		"replaceRegex":[]
+	}	
 }
