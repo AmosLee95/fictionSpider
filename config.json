@@ -71,8 +71,8 @@
 		},
 		"replaceRegex":[]
 	},
-	"soxs": {
-		"sourceLink": "https://www.soxs.cc/HeiKeJiZhiZaoXiTong/",
+	"soxscc": {
+		"sourceLink": "https://www.soxscc.com/WoZhenMeiXiangChuMingA/",
 		"catalogueEncoding": "utf-8",
 		"chapterEncoding": "utf-8",
 		"threadDapth": 100,
@@ -80,12 +80,12 @@
 		"fitter": {
 			"fictionTitle": ".xiaoshuo h1",
 			"chapterList": ".novel_list dd a",
-			"websiteEndRegex": ".+cc",
+			"websiteEndRegex": ".+com",
 			"chapterContent": ".content"
 		},
 		"replaceRegex": [
 			["\\n您可以在百度里搜索.+查找最新章节！\\n\\n",""],
-			["        .+最新章节地址.+html\\n\\n.+全文阅读地.+\\n\\n.+\\n\\n.+\\n\\n.+\\n\\n.+\\(www\\.soxs\\.cc\\)\\n\\n",""],
+			["        .+最新章节地址.+html\\n\\n.+全文阅读地.+\\n\\n.+\\n\\n.+\\n\\n.+\\n\\n.+\\(www\\.soxscc\\.com\\)\\n\\n",""],
 			["(?<=[”？！。])[^”？！。]+www.[^”？！。]+\\n",""]
 		]
 	},
