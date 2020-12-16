@@ -61,7 +61,7 @@
 		"sourceLink": "http://www.biquku.la/23/23315/",
 		"catalogueEncoding": "utf-8",
 		"chapterEncoding": "utf-8",
-		"threadDapth": 1,
+		"threadDapth": 100,
 		"jumpNum": 0,
 		"fitter": {
 			"fictionTitle": "#info h1",
