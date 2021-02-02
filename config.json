@@ -102,7 +102,21 @@
 			"chapterContent": "#content"
 		},
 		"replaceRegex":[]
-	}
+	},
+	"qq1986": {
+		"sourceLink": "https://www.qq1986.com/class/11442/",
+		"catalogueEncoding": "gbk",
+		"chapterEncoding": "gbk",
+		"threadDapth": 100,
+		"jumpNum": 9,
+		"fitter": {
+			"fictionTitle": "#info h1",
+			"chapterList": "#list dd a",
+			"websiteEndRegex": ".+com",
+			"chapterContent": "#content"
+		},
+		"replaceRegex":[]
+	}	
 
 
 
