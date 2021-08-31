@@ -117,7 +117,6 @@
 		},
 		"replaceRegex": [
 		]
-	}	
 	},
 	"qq1986": {
 		"sourceLink": "https://www.qq1986.com/class/11442/",
@@ -132,9 +131,19 @@
 			"chapterContent": "#content"
 		},
 		"replaceRegex":[]
+	},	
+	"00shu": {
+		"sourceLink": "https://www.00shu.com/29/29316/",
+		"catalogueEncoding": "utf-8",
+		"chapterEncoding": "utf-8",
+		"threadDapth": 1,
+		"jumpNum": 0,
+		"fitter": {
+			"fictionTitle": "#info h1",
+			"chapterList": "#list dd a",
+			"websiteEndRegex": ".+com",
+			"chapterContent": "#content"
+		},
+		"replaceRegex":[]
 	}	
-
-
-
-	
 }
