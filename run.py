@@ -16,27 +16,27 @@ import sys
 import time
 def save(line, fileName, mode):
     try:
-        file = open("%s/%s"%(sys.path[0],fileName), mode,   encoding='utf-8')
+        file = open(fileName, mode,   encoding='utf-8')
     except FileNotFoundError:
         import os
-        os.makedirs("%s/%s"%(sys.path[0],re.sub(r'/.+','',fileName)))
-        file = open("%s/%s"%(sys.path[0],fileName), mode,   encoding='utf-8')
+        os.makedirs(re.sub(r'/.+','',fileName))
+        file = open(fileName, mode,   encoding='utf-8')
     file.write(line)
     file.close()
 def readJson():
 
     # read configs
-    file = open("%s/%s"%(sys.path[0],'config.json'), 'r', encoding='utf-8')
+    file = open('config.json', 'r', encoding='utf-8')
     configs = json.load(file)
     file.close()
 
     # read sourceLinkFile
     try:
-        file = open("%s/%s"%(sys.path[0],'sourceUrl.json'), 'r', encoding='utf-8')
+        file = open('sourceUrl.json', 'r', encoding='utf-8')
         sourceLinkFile = json.load(file)
         file.close()
     except:
-        sourceLinkFile = {"sourceLink": "http://www.biquku.la/2/2553/","jumpNum":0,"replaceRegex":[],"threadDapth": 100,"replaceRegex":[]}
+        sourceLinkFile = {"sourceLink": "http://www.biquku.la/2/2553/","jumpNum":0,"threadDapth": 100,"replaceRegex":[]}
 
     # update sourceLinkFile 
     sourceLinkFile['urls'] = []

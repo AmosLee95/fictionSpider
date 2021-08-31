@@ -6,10 +6,10 @@
 		"threadDapth": 100,
 		"jumpNum": 0,
 		"fitter": {
-			"fictionTitle": "#left h1",
-			"chapterList": "#booktext li a",
+			"fictionTitle": ".novelname",
+			"chapterList": ".listchapter li a",
 			"websiteEndRegex": ".+/",
-			"chapterContent": "#content1"
+			"chapterContent": ".chapter_content"
 		},
 		"replaceRegex":[]
 	},
@@ -17,7 +17,7 @@
 		"sourceLink": "http://www.aixiawx.com/8/8615/",
 		"catalogueEncoding": "utf-8",
 		"chapterEncoding": "utf-8",
-		"threadDapth": 100,
+		"threadDapth": 10,
 		"jumpNum": 9,
 		"fitter": {
 			"fictionTitle": "#info h1",
@@ -102,9 +102,20 @@
 			"chapterContent": "#content"
 		},
 		"replaceRegex":[]
-	}
-
-
-
-	
+	},
+	"bswtan": {
+		"sourceLink": "http://www.bswtan.com/70/70672/",
+		"catalogueEncoding": "utf-8",
+		"chapterEncoding": "utf-8",
+		"threadDapth": 100,
+		"jumpNum": 9,
+		"fitter": {
+			"fictionTitle": "#info h1",
+			"chapterList": "#list dd a",
+			"websiteEndRegex": ".+/",
+			"chapterContent": "#content"
+		},
+		"replaceRegex": [
+		]
+	}	
 }
