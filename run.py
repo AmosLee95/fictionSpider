@@ -94,16 +94,13 @@ def readJson():
 user_agent_list = [
     "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36",
     "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36",
-    "Mozilla/5.0 (Windows NT 10.0; …) Gecko/20100101 Firefox/61.0",
     "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/64.0.3282.186 Safari/537.36",
     "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.62 Safari/537.36",
     "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36",
     "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.0)",
     "Mozilla/5.0 (Macintosh; U; PPC Mac OS X 10.5; en-US; rv:1.9.2.15) Gecko/20110303 Firefox/3.6.15",
+    "Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US) AppleWebKit/525.13 (KHTML, like Gecko)Chrome/0.2.149.27 Safari/525.13"
     ]
-headers = {
-    'User-Agent': random.choice(user_agent_list)
-}
 
 class FictionSpider():
     def __init__(self, catalogueEncoding, chapterEncoding):
@@ -123,7 +120,7 @@ class FictionSpider():
         self.website = website
         self.replaceRegex = replaceRegex
         print(sourceLink)
-        r = requests.get(sourceLink, headers=headers, verify=False)
+        r = requests.get(sourceLink, headers={'User-Agent': random.choice(user_agent_list)}, verify=False)
         r.encoding = self.catalogueEncoding
         soup = BeautifulSoup(r.text, features="html.parser")
         # 写入文章的开头
@@ -224,7 +221,7 @@ class FictionSpider():
     def getChapterContent(self, src):
         try:
             # print(src)
-            r = requests.get(src,timeout=30, headers=headers, verify=False)
+            r = requests.get(src,timeout=30, headers={'User-Agent': random.choice(user_agent_list)}, verify=False)
             r.encoding = self.chapterEncoding
             soup = BeautifulSoup(r.text, features="html.parser")
             content  = soup.select(self.fitter['chapterContent'])[0].text
